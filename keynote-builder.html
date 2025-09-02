@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bruce's Killer Keynote Builder</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Lucide React icons as global variables
+        const { ChevronRight, ChevronLeft, Download, Save, Play, Users, Target, MapPin, Clock, Lightbulb, Heart, MessageSquare, User, Sparkles } = lucide;
+    </script>
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useReducer } = React;
+
+        const CARD_CATEGORIES = {
+          planning: { color: 'bg-blue-500', name: 'Planning', icon: Target },
+          framework: { color: 'bg-green-500', name: 'Framework', icon: MapPin },
+          action: { color: 'bg-orange-500', name: 'Action', icon: Play },
+          story: { color: 'bg-red-500', name: 'Story', icon: MessageSquare },
+          whoami: { color: 'bg-purple-500', name: 'Who Am I', icon: User },
+          emotion: { color: 'bg-yellow-500', name: 'Emotion', icon: Heart }
+        };
+
+        const PLANNING_CARDS = [
+          { id: 'position', title: 'Position', description: 'Develop online/offline presence as thought leader' },
+          { id: 'topic', title: 'Topic', description: 'Select relevant, topical subject with clear outcomes' },
+          { id: 'audience', title: 'Audience', description: 'Know your audience demographics and needs' },
+          { id: 'venue', title: 'Venue', description: 'Understand location, stage, seating, equipment' },
+          { id: 'outline', title: 'Speech Outline', description: 'Choose speech type and stick with it' },
+          { id: 'content', title: 'Content', description: 'Gather facts, research, quotes, applications' },
+          { id: 'outcome', title: 'Outcome', description: 'Define desired audience outcomes' }
+        ];
+
+        const FRAMEWORK_CARDS = [
+          { id: 'introduction', title: 'Speaker Introduction', point: '', description: 'Third-person introduction positioning you as authority' },
+          { id: 'greetings', title: 'Greetings', point: '', description: 'Acknowledge VIPs and follow proper protocols' },
+          { id: 'whatis', title: 'What Is?', point: 'A', description: 'Current situation/problem that needs addressing' },
+          { id: 'whatwow', title: 'What Wow?', point: 'B', description: 'Utopian ideal solution - stretch their imagination' },
+          { id: 'whatif', title: 'What If?', point: 'C', description: 'Realistic achievable solution they can visualize' },
+          { id: 'whatnow', title: 'What Now?', point: 'D', description: 'Present your blueprint/methodology/strategy' },
+          { id: 'whyno', title: 'Why No?', point: 'E', description: 'Address audience concerns and objections' },
+          { id: 'whyyes', title: 'Why Yes?', point: 'F', description: 'Provide solutions to overcome objections' },
+          { id: 'hownow', title: 'How Now?', point: 'G', description: 'Specific steps and actions for implementation' }
+        ];
+
+        const speechReducer = (state, action) => {
+          switch (action.type) {
+            case 'UPDATE_FIELD':
+              return {
+                ...state,
+                [action.section]: {
+                  ...state[action.section],
+                  [action.field]: action.value
+                }
+              };
+            case 'GENERATE_CONTENT':
+              return {
+                ...state,
+                generated: {
+                  ...state.generated,
+                  [action.section]: action.content
+                }
+              };
+            default:
+              return state;
+          }
+        };
+
+        const initialState = {
+          planning: {},
+          framework: {},
+          action: {},
+          story: {},
+          whoami: {},
+          emotion: {},
+          generated: {}
+        };
+
+        function KeynoteBuilder() {
+          const [currentStep, setCurrentStep] = useState(0);
+          const [speechData, dispatch] = useReducer(speechReducer, initialState);
+          const [activeCard, setActiveCard] = useState(null);
+
+          const steps = ['Planning', 'Framework', 'Action & Story', 'Final Review'];
+
+          const updateField = (section, field, value) => {
+            dispatch({ type: 'UPDATE_FIELD', section, field, value });
+          };
+
+          const generateSuggestion = (cardId) => {
+            const suggestions = {
+              position: "Build your authority through LinkedIn articles, speaking videos, and industry publications. Focus on your unique expertise in [your field].",
+              topic: "Based on current trends, consider topics around digital transformation, resilience, or sustainable innovation that align with your expertise.",
+              whatis: "Paint a picture of the current challenges your audience faces. Use statistics, trends, or relatable scenarios that make them nod in recognition.",
+              whatwow: "Imagine if every challenge was solved perfectly - what would that world look like? Be bold, be visionary, stretch their imagination.",
+              whatif: "Now bring it back to reality. What's a achievable version of that vision that they can actually work toward?",
+              whyno: "Your audience is thinking: 'We don't have time/money/resources' or 'This won't work in our industry'. Address these head-on.",
+              whyyes: "Counter each objection with specific solutions: new budget allocations, time-saving strategies, or industry-specific adaptations."
+            };
+            return suggestions[cardId] || "Consider how this element serves your speech's journey from Point A to Point C.";
+          };
+
+          // Render functions would go here (same as the React component)
+          // For brevity, I'm showing the structure - you'd copy the full render methods from the App.js
+
+          return React.createElement('div', { className: "min-h-screen bg-gray-800" },
+            // Header, Progress, Main Content, Navigation
+            // Full implementation would include all render methods from the React component
+            React.createElement('div', { className: "text-center p-8 text-white" },
+              React.createElement('h1', null, "Bruce's Killer Keynote Builder"),
+              React.createElement('p', null, "Standalone HTML version - Copy full component code here")
+            )
+          );
+        }
+
+        ReactDOM.render(React.createElement(KeynoteBuilder), document.getElementById('root'));
+    </script>
+</body>
+</html>
